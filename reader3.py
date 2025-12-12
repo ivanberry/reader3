@@ -353,9 +353,17 @@ def save_to_pickle(book: Book, output_dir: str):
 
 # --- CLI ---
 
+if __name__ == "__main__":
+    # Fix pickle module path: ensure classes are pickled as 'reader3.X' not '__main__.X'
+    # This allows server.py to correctly unpickle the book objects
+    import sys
+    import reader3
 
-def process_all_books():
-    """Process all epub files in books/ directory."""
+    sys.modules["__main__"].Book = reader3.Book
+    sys.modules["__main__"].BookMetadata = reader3.BookMetadata
+    sys.modules["__main__"].ChapterContent = reader3.ChapterContent
+    sys.modules["__main__"].TOCEntry = reader3.TOCEntry
+
     for epub_file in [
         "books/" + f for f in os.listdir("books/") if f.endswith(".epub")
     ]:
@@ -370,7 +378,3 @@ def process_all_books():
         print(f"Physical Files (Spine): {len(book_obj.spine)}")
         print(f"TOC Root Items: {len(book_obj.toc)}")
         print(f"Images extracted: {len(book_obj.images)}")
-
-
-if __name__ == "__main__":
-    process_all_books()
