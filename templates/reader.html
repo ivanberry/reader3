@@ -9,7 +9,13 @@
         body { margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; font-family: "Georgia", serif; background: #fff; }
 
         /* Sidebar */
-        #sidebar { width: 300px; background: #f8f9fa; border-right: 1px solid #e9ecef; overflow-y: auto; padding: 20px; flex-shrink: 0; }
+        #sidebar { width: 300px; background: #f8f9fa; border-right: 1px solid #e9ecef; overflow-y: auto; padding: 20px; flex-shrink: 0; transition: width 0.3s, padding 0.3s; }
+        #sidebar.collapsed { width: 0; padding: 0; overflow: hidden; }
+
+        /* Sidebar Toggle */
+        .sidebar-toggle { position: fixed; top: 20px; left: 320px; background: #495057; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: -apple-system, sans-serif; font-size: 0.9em; z-index: 1000; transition: left 0.3s; }
+        .sidebar-toggle:hover { background: #343a40; }
+        .sidebar-toggle.collapsed { left: 20px; }
         .nav-header { font-family: -apple-system, sans-serif; font-weight: bold; color: #495057; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #dee2e6; }
         .nav-home { display: block; margin-bottom: 20px; color: #3498db; text-decoration: none; font-family: -apple-system, sans-serif; font-size: 0.9em; }
 
@@ -60,6 +66,9 @@
     </style>
 </head>
 <body>
+
+    <!-- SIDEBAR TOGGLE -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰ TOC</button>
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -144,6 +153,15 @@
     </div>
 
     <script>
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+            sidebar.classList.toggle('collapsed');
+            toggleBtn.classList.toggle('collapsed');
+            toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '☰ Show TOC' : '☰ TOC';
+        }
+
         // Plain text content for LLM copy
         const chapterText = {{ current_chapter.text | tojson }};
 
