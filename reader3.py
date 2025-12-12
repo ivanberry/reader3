@@ -353,8 +353,9 @@ def save_to_pickle(book: Book, output_dir: str):
 
 # --- CLI ---
 
-if __name__ == "__main__":
-    # all books file in /books/
+
+def process_all_books():
+    """Process all epub files in books/ directory."""
     for epub_file in [
         "books/" + f for f in os.listdir("books/") if f.endswith(".epub")
     ]:
@@ -369,3 +370,7 @@ if __name__ == "__main__":
         print(f"Physical Files (Spine): {len(book_obj.spine)}")
         print(f"TOC Root Items: {len(book_obj.toc)}")
         print(f"Images extracted: {len(book_obj.images)}")
+
+
+if __name__ == "__main__":
+    process_all_books()
